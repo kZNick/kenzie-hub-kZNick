@@ -22,7 +22,10 @@ export const UserProvider = ()=>{
     const[modalOn, setModalOn] = useState(false)
     const[modalLodin, setModalLodin] = useState(false)
     const [loadin, setLoadin] = useState(true)
-    const [animetion,setAnimetion] = useState(false)
+    const [modalTechsOn,SetModalTechsOn] = useState(false)
+    const [idTechs,setIdTechs] = useState("")
+    const [nameTechs,setNameTechs] = useState("")
+
 
     useEffect(() => {
         const user = async () => {
@@ -88,11 +91,10 @@ export const UserProvider = ()=>{
 
     //Delete Tech
 
-    const deleteTechs = async (idTech)=>{
-      
+    const deleteTechs = async ()=>{
       try {
         setLoadin(true)
-        const response = await apiKenzieHub.delete(`users/techs/${idTech}`,headerApi);
+        const response = await apiKenzieHub.delete(`users/techs/${idTechs}`,headerApi);
         toast.success('Tecnologia Deletada', {
           position: "top-right",
           autoClose: 2500,
@@ -119,12 +121,47 @@ export const UserProvider = ()=>{
         setLoadin(false)
         const ListTechs = await apiKenzieHub.get("profile",headerApi);
         setTechsList(ListTechs.data.techs)
+        SetModalTechsOn(!modalTechsOn)
       }
     }
-    console.log(animetion)
+
+    const alterTechs = async (data)=>{
+      try {
+        setLoadin(true)
+        const response = await apiKenzieHub.put(`users/techs/${idTechs}`,data,headerApi);
+        toast.success('Tecnologia alterada', {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+      } catch (error) {
+        console.log(error)
+        toast.error('Algo deu errado', {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+      }finally{
+        setLoadin(false)
+        const ListTechs = await apiKenzieHub.get("profile",headerApi);
+        setTechsList(ListTechs.data.techs)
+        SetModalTechsOn(!modalTechsOn)
+      }
+    }
+
     return (
 
-        <UserContext.Provider value={{apiHub, setApiHub, navigate,techsList,modalOn,setModalOn,techsFunction,modalLodin,deleteTechs,loadin, setLoadin,animetion,setAnimetion}}>
+        <UserContext.Provider value={{apiHub, setApiHub, navigate,techsList,modalOn,setModalOn,techsFunction,modalLodin,deleteTechs,loadin, setLoadin,modalTechsOn,SetModalTechsOn,idTechs,setIdTechs,alterTechs,nameTechs,setNameTechs}}>
             <Outlet/>
         </UserContext.Provider>
     )

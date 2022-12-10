@@ -1,23 +1,20 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../Contexts/contexsUser";
 import { ListTechs } from "../../Styles/home";
-import trash from "../../../assets/Vector.svg"
 
 export const TechsList = ()=>{
 
-    const { techsList, deleteTechs } = useContext(UserContext);
+    const { techsList,modalTechsOn,SetModalTechsOn,setIdTechs,setNameTechs } = useContext(UserContext);
     
     return(
         <>
             {techsList.map((element, index) =>{
-
                 return(
-                    <ListTechs key={index}>
+                    <ListTechs key={index} onClick={()=>{SetModalTechsOn(!modalTechsOn)
+                        setIdTechs(element.id)
+                        setNameTechs(element.title)}}>
                     <h2>{element.title}</h2>
-                    <div className="buttonDelet">
-                        <span>{element.status}</span>
-                        <button onClick={()=>deleteTechs(element.id)}><img src={trash} alt="" /></button>
-                    </div>
+                    <span>{element.status}</span>
                 </ListTechs>
                 )
             })}

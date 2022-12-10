@@ -40,8 +40,7 @@ export const ButtonExite = styled.button`
 `;
 
 export const RegisterButton = styled.button`
-
-width: 100%;
+  width: 100%;
   height: 48px;
   font-family: "Inter", sans-serif;
   border: none;
@@ -51,4 +50,18 @@ width: 100%;
   font-size: 1rem;
   color: white;
   cursor: pointer;
-`
+`;
+export const DeleteButton = styled.button`
+  width: 98px;
+  max-width: 100%;
+  height: 48px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  border: 1.2182px solid var(--Grey-1);
+  border-radius: 4px;
+  background-color:var(--Grey-1);
+  cursor: pointer;
+  color: var(--Grey-0);
+  padding: 0px 22.3336px;
+`;

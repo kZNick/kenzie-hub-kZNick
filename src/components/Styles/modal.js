@@ -50,4 +50,8 @@ export const Modaldiv = styled.div`
   .modalExite{
     animation: slide-in-blurred-top 0.5s;
 }
+.buttons{
+  display: flex;
+  gap: 25px;
+}
 `;

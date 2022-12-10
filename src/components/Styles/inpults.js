@@ -44,5 +44,9 @@ export const Select = styled.select`
       color: var(--Grey-0);
     }
   }
-  
+  :disabled{
+    cursor: pointer;
+    color: aqua;
+  }
+
 `;

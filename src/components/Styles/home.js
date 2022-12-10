@@ -92,18 +92,13 @@ export const ListTechs = styled.li`
   border-radius: 6px;
   height: 52px;
   animation: slide-in-blurred-right 1s;
-  .buttonDelet {
-    display: flex;
-    gap: 25px;
-    span {
+  cursor: pointer;
+  span {
       font-weight: 400;
       font-size: 0.813rem;
       color: var(--Grey-1);
     }
-    button{
-        background-color: transparent;
-        border: none;
-        cursor: pointer; 
-      }
-  }
+    :hover{
+      background-color: var(--Grey-2);
+    }
 `;

@@ -5,19 +5,20 @@ import { HomeContainer, MainHerder, MainHome, Techs } from "../../Styles/home";
 import { Header } from "./header";
 import imgButton from "../../../assets/+.png";
 import { TechsList } from "./techs";
-import { ModalHome } from "./modal";
+import { ModalHome, ModalTechs } from "./modal";
 import { Loading } from "../../loading";
 
 
 
 
 export const Home = () => {
-  const { apiHub, techsList,modalOn,setModalOn,loadin} = useContext(UserContext);
+  const { apiHub, techsList,modalOn,setModalOn,loadin,modalTechsOn} = useContext(UserContext);
 
   return (
     <HomeContainer>
       {loadin ? (<Loading/>): null}
       {modalOn ? (<ModalHome/>): null}
+      {modalTechsOn ? (<ModalTechs/>): null}
       <Header />
       <MainHerder>
         <div className="inforHome">

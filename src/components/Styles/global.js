@@ -160,6 +160,9 @@ body{
     opacity: 0;
   }
 }
-
+input:disabled{
+        cursor:not-allowed;
+        color: var(--Grey-0);
+}
 `;
 export default GlobalStyle;
