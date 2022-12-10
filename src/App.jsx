@@ -7,6 +7,8 @@ import GlobalStyle from "./components/Styles/global";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Home } from "./components/pages/home/home";
+import { UserProvider } from "./components/Contexts/contexsUser";
+import { RegisterLoginProvider } from "./components/Contexts/contexsLoginRegister";
 
 function App() {
   return (
@@ -25,9 +27,13 @@ function App() {
         theme="dark"
       />
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home/>} />
+        <Route element={<RegisterLoginProvider/>}>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+        <Route element={<UserProvider />}>
+          <Route path="/home" element={<Home />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

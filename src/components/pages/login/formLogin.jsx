@@ -1,74 +1,38 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Form } from "../../Styles/form";
 import { Inpult } from "../../Styles/inpults";
 import { Label } from "../../Styles/label";
 import { ButtonLogin, ButtonRegister } from "../../Styles/buttons";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { toast } from "react-toastify";
-import { apiKenzieHub } from "../../services/api";
+import { RegisterLoginCotexts } from "../../Contexts/contexsLoginRegister";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
-
-
   const navigate = useNavigate();
-  const [loading,setLoading] = useState(false)
+
+  const { handleSubmitLogin, loading, logged } = useContext(RegisterLoginCotexts);
+
+  
+  if(logged){
+    navigate("/home")
+  }
 
   const formSchema = yup.object().shape({
     email: yup.string().required("Email obrigadorio").email("Email inválido"),
     password: yup.string().required("Senha obrigadoria"),
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     resolver: yupResolver(formSchema),
   });
 
-  const handleSubmitFunction = async (datas) => {
-     
-    try {
-      setLoading(true);
-      const response = await apiKenzieHub.post("sessions",datas);
-      toast.success('Login feito com Sucesso', {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        });
-        localStorage.setItem("HubTokenUser",response.data.token)
-        navigate("/home")
-    } catch (error) {
-      console.log(error);
-      toast.error('Email invalido ou senha invalida', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        });
-    }finally {
-      setLoading(false);
-  }
-  };
-
-
   
   return (
-    <Form onSubmit={handleSubmit(handleSubmitFunction)}>
+    <Form onSubmit={handleSubmit(handleSubmitLogin)}>
       <div className="hederForm">
-      <h2>Login</h2>
+        <h2>Login</h2>
       </div>
       <div className="divForm">
         <Label htmlFor="email">Email</Label>
@@ -88,7 +52,9 @@ export const LoginForm = () => {
           {...register("password")}
         />
       </div>
-      <ButtonLogin type="submit">{loading?("carregando"):("Entrar")}</ButtonLogin>
+      <ButtonLogin type="submit">
+        {loading ? "carregando" : "Entrar"}
+      </ButtonLogin>
       <span>Ainda não possui uma conta?</span>
       <ButtonRegister onClick={() => navigate("/register")}>
         Cadastre-se

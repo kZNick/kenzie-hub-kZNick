@@ -1,54 +1,47 @@
-import axios, { Axios } from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { HomeContainer, MainHome } from "../../Styles/home";
+import React from "react";
+import { useContext } from "react";
+import { UserContext } from "../../Contexts/contexsUser";
+import { HomeContainer, MainHerder, MainHome, Techs } from "../../Styles/home";
 import { Header } from "./header";
+import imgButton from "../../../assets/+.png";
+import { TechsList } from "./techs";
+import { ModalHome } from "./modal";
+import { Loading } from "../../loading";
+
+
+
 
 export const Home = () => {
+  const { apiHub, techsList,modalOn,setModalOn,loadin} = useContext(UserContext);
 
-    const navigate = useNavigate();
-
-  const token = localStorage.getItem("HubTokenUser") || "noToken";
-
-
-
-
-  const [apiHub, setApiHub] = useState([]);
-
-  useEffect(() => {
-    const user = async () => {
-      try {
-        const api = await axios.get("https://kenziehub.herokuapp.com/profile", {
-          headers: { Authorization: "Bearer ".concat(token) },
-        });
-        setApiHub(api.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (token === "noToken") {
-        localStorage.clear();
-        navigate("/")
-      }
-    user();
-  }, []);
-
-
-  console.log(apiHub);
   return (
     <HomeContainer>
+      {loadin ? (<Loading/>): null}
+      {modalOn ? (<ModalHome/>): null}
       <Header />
-      <MainHome>
+      <MainHerder>
         <div className="inforHome">
           <h2>Olá, {apiHub.name}</h2>
           <span>{apiHub.course_module}</span>
         </div>
+      </MainHerder>
+      <MainHome>
+        <div className="HeaderMain">
+          <h3>Tecnologias</h3>
+          <button onClick={()=>setModalOn(!modalOn)}>
+            <img src={imgButton} alt="" />
+          </button>
+        </div>
+        <Techs>
+          {techsList.length > 0? (
+            <TechsList/>
+          ) : (
+            <li className="NoTechs">
+              <h3>Você não tem Tecnologia Cadastrada ainda</h3>
+            </li>
+          )}
+        </Techs>
       </MainHome>
-      <h3>Que pena! Estamos em desenvolvimento :(</h3>
-      <p>Nossa aplicação está em desenvolvimento, em breve teremos novidades</p>
     </HomeContainer>
   );
 };

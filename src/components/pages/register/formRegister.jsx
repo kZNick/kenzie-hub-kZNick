@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { RegisterButton } from "../../Styles/buttons";
 import { Form } from "../../Styles/form";
@@ -6,15 +6,11 @@ import { Inpult, Select } from "../../Styles/inpults";
 import { Label } from "../../Styles/label";
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { apiKenzieHub } from "../../services/api";
-import { toast } from "react-toastify";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { RegisterLoginCotexts } from "../../Contexts/contexsLoginRegister";
 
 export const FormRegister = () => {
 
-  const navigate = useNavigate();
-  const [loading,setLoading] = useState(false)
+  const {handleSubmitRegister,loading} = useContext(RegisterLoginCotexts);
 
   const formSchema = yup.object().shape({
     name: yup.string().required("Nome Obrigatório"),
@@ -32,43 +28,10 @@ export const FormRegister = () => {
   } = useForm({
     resolver: yupResolver(formSchema),
   });
-
-  const handleSubmitFunction =async (data) => {
-
-    try {
-      setLoading(true);
-      const response = await apiKenzieHub.post("users",data);
-      toast.success('Conta criada com sucesso!', {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        });
-        setTimeout(()=>navigate("/"),2000)
-    } catch (error) {
-      console.log(error)
-      toast.error('Ops! Algo deu errado', {
-        position: "top-right",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        });
-    } finally {
-      setLoading(false);
-  }
     
 
-  };
   return (
-    <Form onSubmit={handleSubmit(handleSubmitFunction)}>
+    <Form onSubmit={handleSubmit(handleSubmitRegister)}>
       <div className="hederForm">
       <h2>Crie sua conta</h2>
       <span>Rapido e grátis, vamos nessa</span>
